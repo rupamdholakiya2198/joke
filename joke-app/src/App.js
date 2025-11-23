@@ -12,13 +12,10 @@ function App() {
 
     try {
       const res = await fetch("https://official-joke-api.appspot.com/random_joke");
-      if (!res.ok) {
-        throw new Error("Failed");
-      }
-
+      if (!res.ok) throw new Error("Failed");
       const data = await res.json();
       setJoke(data);
-    } catch (err) {
+    } catch {
       setError(true);
     } finally {
       setLoading(false);
@@ -28,26 +25,22 @@ function App() {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <h2>Random Joke</h2>
+        <h1>Random Joke</h1>
         <p>Click the button to fetch a fresh one.</p>
 
-        <button onClick={fetchJoke} style={styles.button}>
-          {loading ? "Fetching..." : "Fetch Joke"}
+        <button disabled={loading} onClick={fetchJoke} style={styles.button}>
+          {loading ? "Fetching..." : "Fetch joke"}
         </button>
 
-        {/* Error State */}
         {error && (
           <div style={{ marginTop: "15px" }}>
-            <p style={{ color: "red" }}>
-              Could not fetch a joke. Try again.
-            </p>
+            <p style={{ color: "red" }}>Could not fetch a joke. Try again.</p>
             <button onClick={fetchJoke} style={styles.retry}>
               Try again
             </button>
           </div>
         )}
 
-        {/* Joke Display */}
         {joke && !error && (
           <div style={{ marginTop: "20px" }}>
             <p>{joke.setup}</p>
@@ -79,10 +72,7 @@ const styles = {
   },
   button: {
     padding: "10px 20px",
-    background: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "5px",
+    marginTop: "10px",
     cursor: "pointer",
   },
   retry: {
